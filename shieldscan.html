@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ShieldScan — Sicurezza Digitale per PMI · Riccardo Del Giudice</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0a0c10; --bg2: #0d1117;
+      --accent: #00d4ff; --accent2: #7b2fff; --accent3: #00ff9d;
+      --text: #c9d1d9; --text-dim: #8b949e;
+      --card: #161b22; --border: #21262d;
+      --glow: 0 0 20px rgba(0,212,255,0.3);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { background:var(--bg); color:var(--text); font-family:'Rajdhani',sans-serif; font-size:17px; line-height:1.7; overflow-x:hidden; }
+    ::-webkit-scrollbar { width:6px; }
+    ::-webkit-scrollbar-track { background:var(--bg2); }
+    ::-webkit-scrollbar-thumb { background:var(--accent); border-radius:3px; }
+
+    /* NAV */
+    nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:0 5%; height:68px; background:rgba(10,12,16,0.88); backdrop-filter:blur(14px); border-bottom:1px solid var(--border); }
+    .nav-logo { font-family:'Orbitron',monospace; font-weight:700; font-size:1rem; color:var(--accent); text-decoration:none; letter-spacing:2px; text-shadow:var(--glow); }
+    .nav-links { display:flex; gap:1.8rem; list-style:none; }
+    .nav-links a { color:var(--text-dim); text-decoration:none; font-family:'Rajdhani',sans-serif; font-weight:600; font-size:0.88rem; letter-spacing:1.2px; text-transform:uppercase; transition:color 0.25s; white-space:nowrap; }
+    .nav-links a:hover { color:var(--accent); text-shadow:var(--glow); }
+    .nav-links a.active { color:var(--accent); }
+    .nav-hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:4px; }
+    .nav-hamburger span { display:block; width:22px; height:2px; background:var(--accent); border-radius:2px; }
+    .nav-mobile { display:none; position:fixed; top:68px; left:0; right:0; background:rgba(10,12,16,0.97); border-bottom:1px solid var(--border); padding:1.5rem 5%; flex-direction:column; gap:1.2rem; z-index:99; }
+    .nav-mobile.open { display:flex; }
+    .nav-mobile a { color:var(--text-dim); text-decoration:none; font-family:'Rajdhani',sans-serif; font-weight:600; font-size:1rem; letter-spacing:1.5px; text-transform:uppercase; }
+    .nav-mobile a:hover { color:var(--accent); }
+    @media(max-width:780px){ .nav-links{display:none;} .nav-hamburger{display:flex;} }
+
+    /* HERO */
+    #hero {
+      min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+      text-align:center; padding:100px 5% 60px; position:relative; overflow:hidden;
+    }
+    #hero::before {
+      content:''; position:absolute; inset:0;
+      background-image: linear-gradient(rgba(0,212,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,255,0.04) 1px, transparent 1px);
+      background-size:60px 60px; animation:gridMove 20s linear infinite;
+    }
+    @keyframes gridMove { to { transform:translateY(60px); } }
+    #hero::after {
+      content:''; position:absolute; width:700px; height:700px;
+      background:radial-gradient(circle, rgba(0,212,255,0.08) 0%, transparent 65%);
+      top:50%; left:50%; transform:translate(-50%,-50%); pointer-events:none;
+    }
+
+    .shield-icon {
+      position:relative; z-index:1; margin-bottom:2rem;
+      width:110px; height:110px; margin-left:auto; margin-right:auto;
+      display:flex; align-items:center; justify-content:center;
+      font-size:3.2rem;
+      border:2px solid rgba(0,212,255,0.4);
+      border-radius:16px;
+      background:rgba(0,212,255,0.05);
+      box-shadow: 0 0 40px rgba(0,212,255,0.2), inset 0 0 30px rgba(0,212,255,0.04);
+      animation: shieldPulse 3s ease-in-out infinite;
+    }
+    @keyframes shieldPulse {
+      0%,100% { box-shadow: 0 0 40px rgba(0,212,255,0.2), inset 0 0 30px rgba(0,212,255,0.04); }
+      50% { box-shadow: 0 0 60px rgba(0,212,255,0.35), inset 0 0 40px rgba(0,212,255,0.08); }
+    }
+
+    .hero-content { position:relative; z-index:1; max-width:780px; }
+    .hero-label { font-family:'Share Tech Mono',monospace; font-size:0.85rem; color:var(--accent); letter-spacing:4px; text-transform:uppercase; margin-bottom:1rem; opacity:0; animation:fadeUp 0.8s 0.2s ease forwards; }
+    .hero-title { font-family:'Orbitron',monospace; font-size:clamp(2.4rem,6vw,4.2rem); font-weight:900; color:#fff; letter-spacing:4px; text-shadow:0 0 40px rgba(0,212,255,0.3); margin-bottom:1.2rem; opacity:0; animation:fadeUp 0.8s 0.4s ease forwards; }
+    .hero-title span { color:var(--accent); }
+    .hero-sub { font-size:1.2rem; color:var(--text-dim); line-height:1.8; max-width:620px; margin:0 auto; opacity:0; animation:fadeUp 0.8s 0.6s ease forwards; }
+    .hero-sub strong { color:var(--text); }
+    .hero-badges { margin-top:2rem; display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; opacity:0; animation:fadeUp 0.8s 0.8s ease forwards; }
+    .hero-badge { background:rgba(0,212,255,0.07); border:1px solid rgba(0,212,255,0.25); border-radius:20px; padding:0.35rem 1.1rem; font-family:'Share Tech Mono',monospace; font-size:0.78rem; color:var(--accent); letter-spacing:1px; }
+    .hero-badge.green { background:rgba(0,255,157,0.07); border-color:rgba(0,255,157,0.25); color:var(--accent3); }
+    .scroll-hint { margin-top:3rem; opacity:0; animation:fadeUp 0.8s 1.2s ease forwards; }
+    .scroll-hint span { font-family:'Share Tech Mono',monospace; font-size:0.75rem; color:var(--text-dim); letter-spacing:2px; display:block; margin-bottom:0.5rem; }
+    .scroll-arrow { width:1px; height:40px; background:linear-gradient(to bottom, var(--accent), transparent); margin:0 auto; animation:scrollPulse 1.5s ease-in-out infinite; }
+    @keyframes scrollPulse { 0%,100%{opacity:1;transform:scaleY(1)} 50%{opacity:0.4;transform:scaleY(0.7)} }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
+
+    /* SECTIONS */
+    section { padding:90px 8%; }
+    .section-title { font-family:'Orbitron',monospace; font-size:1.4rem; font-weight:700; color:#fff; letter-spacing:3px; text-transform:uppercase; margin-bottom:3rem; display:flex; align-items:center; gap:1rem; }
+    .section-title::before { content:'//'; color:var(--accent); font-family:'Share Tech Mono',monospace; }
+    .section-title::after { content:''; flex:1; height:1px; background:linear-gradient(to right, var(--accent), transparent); max-width:300px; }
+
+    /* PROBLEMA */
+    #problema { background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+    .problema-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:1.5rem; max-width:1000px; }
+    .problema-card {
+      background:var(--card); border:1px solid var(--border); border-radius:12px;
+      padding:1.8rem; position:relative; overflow:hidden;
+      transition:border-color 0.3s, transform 0.3s;
+    }
+    .problema-card:hover { border-color:rgba(0,212,255,0.3); transform:translateY(-4px); }
+    .problema-card::before { content:''; position:absolute; top:0; left:0; width:3px; height:100%; background:linear-gradient(to bottom, var(--accent2), transparent); }
+    .problema-icon { font-size:2rem; margin-bottom:1rem; }
+    .problema-card h3 { font-family:'Rajdhani',sans-serif; font-size:1.1rem; font-weight:700; color:#fff; margin-bottom:0.5rem; }
+    .problema-card p { font-size:0.95rem; color:var(--text-dim); line-height:1.7; }
+
+    /* COSA FA */
+    #cosafa { border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+    .checks-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(300px, 1fr)); gap:1.2rem; max-width:1000px; }
+    .check-item {
+      display:flex; align-items:flex-start; gap:1rem;
+      background:var(--card); border:1px solid var(--border); border-radius:10px;
+      padding:1.4rem 1.6rem; transition:border-color 0.25s, box-shadow 0.25s;
+    }
+    .check-item:hover { border-color:rgba(0,255,157,0.3); box-shadow:0 0 20px rgba(0,255,157,0.08); }
+    .check-dot { width:10px; height:10px; border-radius:50%; background:var(--accent3); box-shadow:0 0 8px rgba(0,255,157,0.6); flex-shrink:0; margin-top:6px; }
+    .check-item h3 { font-size:1rem; font-weight:700; color:#fff; margin-bottom:0.25rem; }
+    .check-item p { font-size:0.9rem; color:var(--text-dim); line-height:1.6; }
+
+    /* COME FUNZIONA */
+    #comefunziona { background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+    .steps-list { display:flex; flex-direction:column; max-width:720px; gap:0; }
+    .step-item { display:flex; gap:1.6rem; position:relative; }
+    .step-left { display:flex; flex-direction:column; align-items:center; }
+    .step-num {
+      width:44px; height:44px; border-radius:50%; border:2px solid var(--accent);
+      display:flex; align-items:center; justify-content:center;
+      font-family:'Orbitron',monospace; font-size:0.85rem; font-weight:700; color:var(--accent);
+      background:rgba(0,212,255,0.05); flex-shrink:0;
+      box-shadow:0 0 16px rgba(0,212,255,0.2);
+    }
+    .step-connector { width:2px; flex:1; min-height:24px; background:linear-gradient(to bottom, rgba(0,212,255,0.3), transparent); margin:4px 0; }
+    .step-item:last-child .step-connector { display:none; }
+    .step-content { padding-bottom:2.4rem; flex:1; padding-top:0.5rem; }
+    .step-content h3 { font-family:'Rajdhani',sans-serif; font-size:1.15rem; font-weight:700; color:#fff; margin-bottom:0.4rem; }
+    .step-content p { font-size:0.95rem; color:var(--text-dim); line-height:1.7; }
+    .step-tag { display:inline-block; margin-top:0.5rem; font-family:'Share Tech Mono',monospace; font-size:0.72rem; padding:0.2rem 0.7rem; border-radius:4px; background:rgba(0,212,255,0.08); color:var(--accent); border:1px solid rgba(0,212,255,0.2); }
+
+    /* REPORT */
+    #report { border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+    .report-preview {
+      background:var(--card); border:1px solid var(--border); border-radius:14px;
+      padding:2.5rem 3rem; max-width:860px; position:relative; overflow:hidden;
+    }
+    .report-preview::before { content:''; position:absolute; top:0; left:0; width:4px; height:100%; background:linear-gradient(to bottom, var(--accent), var(--accent2)); }
+    .report-sections { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:1rem; margin-top:1.5rem; }
+    .report-section-item { display:flex; align-items:center; gap:0.8rem; padding:0.9rem 1rem; background:rgba(0,212,255,0.04); border:1px solid rgba(0,212,255,0.1); border-radius:8px; font-size:0.9rem; color:var(--text); }
+    .report-section-item .rs-icon { font-size:1.2rem; }
+    .report-note { margin-top:1.8rem; font-size:0.92rem; color:var(--text-dim); line-height:1.8; border-top:1px solid var(--border); padding-top:1.4rem; }
+    .report-note strong { color:var(--accent3); }
+
+    /* CHI SONO */
+    #chisono { background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border); }
+    .about-wrap { display:flex; gap:3rem; align-items:flex-start; max-width:860px; flex-wrap:wrap; }
+    .about-avatar {
+      width:90px; height:90px; border-radius:50%; border:2px solid var(--accent);
+      box-shadow:0 0 24px rgba(0,212,255,0.3); background:linear-gradient(135deg,#1a1f2e,#0d1117);
+      display:flex; align-items:center; justify-content:center;
+      font-family:'Orbitron',monospace; font-size:1.6rem; color:var(--accent); font-weight:900;
+      flex-shrink:0;
+    }
+    .about-text { flex:1; min-width:260px; }
+    .about-text p { font-size:1.05rem; color:var(--text-dim); line-height:1.9; margin-bottom:1rem; }
+    .about-text p strong { color:var(--text); }
+    .about-contact {
+      display:inline-flex; align-items:center; gap:0.6rem;
+      background:rgba(0,212,255,0.07); border:1px solid rgba(0,212,255,0.25);
+      border-radius:8px; padding:0.7rem 1.4rem;
+      font-family:'Share Tech Mono',monospace; font-size:0.85rem; color:var(--accent);
+      text-decoration:none; transition:background 0.2s, box-shadow 0.2s;
+      margin-top:0.5rem;
+    }
+    .about-contact:hover { background:rgba(0,212,255,0.12); box-shadow:var(--glow); }
+
+    /* FOOTER */
+    footer { text-align:center; padding:2.5rem 5%; border-top:1px solid var(--border); font-family:'Share Tech Mono',monospace; font-size:0.8rem; color:var(--text-dim); }
+    footer a { color:var(--accent); text-decoration:none; }
+    footer a:hover { text-shadow:var(--glow); }
+
+    @media(max-width:600px){
+      section { padding:60px 5%; }
+      .report-preview { padding:1.8rem 1.5rem; }
+      .about-wrap { flex-direction:column; gap:1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">RDG</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Portfolio</a></li>
+    <li><a href="#cosafa">Cosa analizza</a></li>
+    <li><a href="#comefunziona">Come funziona</a></li>
+    <li><a href="#chisono">Chi sono</a></li>
+    <li><a href="reports.html">📓 Reports</a></li>
+  </ul>
+  <button class="nav-hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="nav-mobile" id="navMobile">
+  <a href="index.html">Portfolio</a>
+  <a href="#cosafa">Cosa analizza</a>
+  <a href="#comefunziona">Come funziona</a>
+  <a href="#chisono">Chi sono</a>
+  <a href="reports.html">📓 Reports</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="shield-icon">🛡️</div>
+  <div class="hero-content">
+    <p class="hero-label">Cybersecurity per PMI</p>
+    <h1 class="hero-title">SHIELD<span>SCAN</span></h1>
+    <p class="hero-sub">
+      Servizio di analisi della sicurezza digitale rivolto a <strong>piccole e medie imprese</strong>.
+      Viene prodotto un report tecnico in italiano, strutturato per essere comprensibile
+      senza competenze informatiche pregresse, con indicazioni operative per ogni criticità rilevata.
+    </p>
+    <div class="hero-badges">
+      <span class="hero-badge">🔍 Analisi completa</span>
+      <span class="hero-badge green">📄 Report PDF professionale</span>
+      <span class="hero-badge">🇮🇹 Tutto in italiano</span>
+    </div>
+    <div class="scroll-hint">
+      <span>scopri di più</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEMA -->
+<section id="problema">
+  <h2 class="section-title">Il problema</h2>
+  <div class="problema-grid">
+    <div class="problema-card">
+      <div class="problema-icon">🎯</div>
+      <h3>Le PMI sono bersagli frequenti</h3>
+      <p>Il 43% degli attacchi informatici registrati colpisce piccole imprese. La causa principale non è la rilevanza del target, ma l'assenza di misure di sicurezza di base.</p>
+    </div>
+    <div class="problema-card">
+      <div class="problema-icon">🔓</div>
+      <h3>Configurazioni non monitorate</h3>
+      <p>Porte esposte, certificati in scadenza, record email non configurati: vulnerabilità tecniche elementari che rimangono silenti fino a quando vengono sfruttate.</p>
+    </div>
+    <div class="problema-card">
+      <div class="problema-icon">📋</div>
+      <h3>Barriera tecnica all'accessibilità</h3>
+      <p>Gli strumenti di analisi esistenti sono progettati per specialisti del settore. ShieldScan produce output leggibili da qualsiasi interlocutore aziendale, corredati da procedure operative concrete.</p>
+    </div>
+  </div>
+</section>
+
+<!-- COSA ANALIZZA -->
+<section id="cosafa">
+  <h2 class="section-title">Cosa analizza</h2>
+  <div class="checks-grid">
+    <div class="check-item">
+      <div class="check-dot"></div>
+      <div>
+        <h3>Porte di rete esposte</h3>
+        <p>Viene verificata l'esposizione dei servizi di rete su internet, con valutazione del profilo di rischio associato a ciascuna porta rilevata come aperta.</p>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-dot"></div>
+      <div>
+        <h3>Certificato SSL/TLS</h3>
+        <p>Viene verificata la presenza, la validità e la scadenza del certificato crittografico. Un certificato assente o scaduto espone le comunicazioni a intercettazione.</p>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-dot"></div>
+      <div>
+        <h3>Protezione email — SPF, DKIM, DMARC</h3>
+        <p>Viene analizzata la configurazione dei record di autenticazione email. L'assenza di questi record permette a terzi di inviare messaggi fraudolenti utilizzando il dominio aziendale.</p>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-dot"></div>
+      <div>
+        <h3>Blacklist spam</h3>
+        <p>Viene effettuata una verifica del dominio e dell'IP su cinque database internazionali di blacklist. La presenza in queste liste compromette la consegna delle comunicazioni email aziendali.</p>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-dot"></div>
+      <div>
+        <h3>Header di sicurezza HTTP</h3>
+        <p>Vengono analizzati gli header di risposta del server — HSTS, CSP, X-Frame-Options e altri — la cui assenza espone i visitatori del sito a classi note di attacchi client-side.</p>
+      </div>
+    </div>
+    <div class="check-item">
+      <div class="check-dot"></div>
+      <div>
+        <h3>Scadenza del dominio</h3>
+        <p>Tramite query WHOIS viene verificata la data di scadenza della registrazione del dominio. Un dominio non rinnovato può essere registrato da terzi, con perdita permanente dell'identità digitale aziendale.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COME FUNZIONA -->
+<section id="comefunziona">
+  <h2 class="section-title">Come funziona</h2>
+  <ul class="steps-list">
+    <li class="step-item">
+      <div class="step-left">
+        <div class="step-num">01</div>
+        <div class="step-connector"></div>
+      </div>
+      <div class="step-content">
+        <h3>Indicazione del dominio</h3>
+        <p>È sufficiente il nome del sito aziendale. Non è richiesto alcun accesso al server, nessuna credenziale, nessuna installazione di software.</p>
+        <span class="step-tag">es. mia-azienda.it</span>
+      </div>
+    </li>
+    <li class="step-item">
+      <div class="step-left">
+        <div class="step-num">02</div>
+        <div class="step-connector"></div>
+      </div>
+      <div class="step-content">
+        <h3>Analisi del dominio</h3>
+        <p>ShieldScan esamina il dominio su tutti i fronti: rete, email, SSL, configurazioni web. L'analisi completa viene eseguita in pochi minuti, senza alcun impatto sul sito.</p>
+        <span class="step-tag">analisi automatica · nessun impatto sul sito</span>
+      </div>
+    </li>
+    <li class="step-item">
+      <div class="step-left">
+        <div class="step-num">03</div>
+        <div class="step-connector"></div>
+      </div>
+      <div class="step-content">
+        <h3>Consegna del report PDF</h3>
+        <p>Un documento professionale intestato all'azienda, con il punteggio di sicurezza, ogni problema spiegato in linguaggio chiaro e i passi concreti per risolverlo.</p>
+        <span class="step-tag">consegnato via email</span>
+      </div>
+    </li>
+  </ul>
+</section>
+
+<!-- IL REPORT -->
+<section id="report">
+  <h2 class="section-title">Il report</h2>
+  <div class="report-preview">
+    <p style="font-size:1.05rem; color:var(--text-dim); line-height:1.8; margin-bottom:0.5rem;">
+      Il report è un documento PDF strutturato, intestato all'azienda analizzata, contenente:
+    </p>
+    <div class="report-sections">
+      <div class="report-section-item"><span class="rs-icon">📊</span> Punteggio di sicurezza</div>
+      <div class="report-section-item"><span class="rs-icon">🔍</span> Lista di tutti i problemi trovati</div>
+      <div class="report-section-item"><span class="rs-icon">💬</span> Spiegazione in italiano semplice</div>
+      <div class="report-section-item"><span class="rs-icon">⚠️</span> Livello di rischio per ogni problema</div>
+      <div class="report-section-item"><span class="rs-icon">🛠️</span> Passi concreti per sistemare</div>
+      <div class="report-section-item"><span class="rs-icon">📅</span> Data e ID della scansione</div>
+    </div>
+    <p class="report-note">
+      <strong>Ogni criticità rilevata è documentata in tre sezioni:</strong> descrizione tecnica accessibile, analisi del rischio specifico per il contesto aziendale, e procedura operativa di risoluzione — applicabile anche in assenza di un responsabile IT interno.
+    </p>
+  </div>
+</section>
+
+<!-- CHI SONO -->
+<section id="chisono">
+  <h2 class="section-title">Chi c'è dietro</h2>
+  <div class="about-wrap">
+    <div class="about-avatar">RD</div>
+    <div class="about-text">
+      <p>
+        <strong>Riccardo Del Giudice</strong>, studente di Informatica presso l'Università Ca' Foscari di Venezia. ShieldScan nasce con l'obiettivo di rendere
+        l'analisi di sicurezza accessibile alle piccole e medie imprese, che spesso non dispongono
+        di risorse interne dedicate alla sicurezza digitale.
+      </p>
+      <p>
+        Ogni report viene preparato e verificato personalmente. È disponibile un canale diretto
+        per qualsiasi chiarimento sui risultati dell'analisi.
+      </p>
+      <a href="mailto:hello.riccardodelgiudice@gmail.com" class="about-contact">
+        ✉ hello.riccardodelgiudice@gmail.com
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>ShieldScan · <a href="mailto:hello.riccardodelgiudice@gmail.com">Riccardo Del Giudice</a> · <em>Security, simplified.</em></p>
+  <p style="margin-top:0.5rem;"><a href="index.html">← Torna al portfolio</a></p>
+</footer>
+
+<script>
+  document.getElementById('hamburger').addEventListener('click', () => {
+    document.getElementById('navMobile').classList.toggle('open');
+  });
+  document.getElementById('navMobile').querySelectorAll('a').forEach(a =>
+    a.addEventListener('click', () => document.getElementById('navMobile').classList.remove('open'))
+  );
+</script>
+</body>
+</html>
