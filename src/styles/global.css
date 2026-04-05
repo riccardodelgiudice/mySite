@@ -107,7 +107,7 @@ body {
   inset: 0;
   pointer-events: none;
   user-select: none;
-  z-index: 90;
+  z-index: 9999;
 }
 
 @media (pointer: fine) {

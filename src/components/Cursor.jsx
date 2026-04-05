@@ -1,17 +1,21 @@
 import { useEffect, useRef } from 'react'
 
-const VIEW_SELECTOR = '[data-cursor="view"]'
+const CURSOR_SELECTOR = '[data-cursor]'
 
 function getCursorMeta(target) {
   if (!(target instanceof Element)) {
     return { mode: 'default', label: 'VIEW' }
   }
 
-  const viewTarget = target.closest(VIEW_SELECTOR)
-  if (viewTarget) {
+  const cursorTarget = target.closest(CURSOR_SELECTOR)
+  if (cursorTarget) {
+    const mode = cursorTarget.getAttribute('data-cursor') || 'default'
+
     return {
-      mode: 'view',
-      label: viewTarget.getAttribute('data-cursor-label') || 'VIEW',
+      mode,
+      label: mode === 'view'
+        ? cursorTarget.getAttribute('data-cursor-label') || 'VIEW'
+        : '',
     }
   }
 
@@ -78,7 +82,12 @@ export default function Cursor() {
 
     const render = () => {
       const targetOpacity = pointer.visible ? 1 : 0
-      const targetScale = currentMode === 'view' ? 1.38 : 1
+      const targetScale =
+        currentMode === 'view'
+          ? 1.38
+          : currentMode === 'nav' || currentMode === 'hover'
+            ? 1.18
+            : 1
       const previousX = follower.x
       const previousY = follower.y
 
