@@ -12,6 +12,8 @@ function SocialLinks() {
     <div className="social">
       {SOCIAL.map(({ href, icon, label }) => (
         <a key={label} href={href} aria-label={label}
+           data-cursor="view"
+           data-cursor-label={label}
            target={href.startsWith('http') ? '_blank' : undefined}
            rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}>
           <i className={icon} />
@@ -35,10 +37,14 @@ function NavItems() {
     <>
       <button
         className={`nav-item${isHome ? ' active' : ''}`}
+        data-cursor="view"
+        data-cursor-label="HOME"
         onClick={() => handleNav('/')}
       >HOME</button>
       <button
         className={`nav-item${isWorks ? ' active' : ''}`}
+        data-cursor="view"
+        data-cursor-label="WORKS"
         onClick={() => handleNav('/works')}
       >WORKS</button>
     </>
@@ -62,7 +68,13 @@ export default function Nav({ isDark, onToggle }) {
 
       {/* Dark/Light toggle */}
       <div className="toggle-wrap">
-        <button className="toggle-btn" onClick={onToggle} aria-label="Toggle theme">
+        <button
+          className="toggle-btn"
+          onClick={onToggle}
+          aria-label="Toggle theme"
+          data-cursor="view"
+          data-cursor-label="THEME"
+        >
           <div className={`toggle-dot${!isDark ? ' on' : ''}`} />
           <div className={`toggle-dot${isDark  ? ' on' : ''}`} />
         </button>
