@@ -16,6 +16,15 @@
 
 .nav-mobile .nav-links { display: flex; gap: clamp(0.8rem, 3vw, 1.5rem); align-items: center; }
 .nav-mobile .social    { display: flex; gap: 0.75rem; align-items: center; font-size: clamp(0.85rem, 2vw, 1.1rem); }
+.nav-mobile .nav-item,
+.nav-mobile .social a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.75rem;
+}
+.nav-mobile .nav-item { padding: 0 0.2rem; }
+.nav-mobile .social a { min-width: 2.75rem; }
 
 /* ── Desktop side nav ────────────────────────────────────── */
 .nav-desktop {
