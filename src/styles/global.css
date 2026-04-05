@@ -1,0 +1,176 @@
+/* ── Reset ──────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; cursor: none !important; }
+::-webkit-scrollbar { display: none; }
+html { scrollbar-width: none; scroll-behavior: auto; }
+body { -ms-overflow-style: none; }
+a { color: inherit; text-decoration: none; }
+h1, h2, h3 { font-size: inherit; font-weight: inherit; }
+img, svg, video { display: block; }
+
+@media (pointer: coarse) {
+  *, *::before, *::after { cursor: auto !important; }
+}
+
+/* ── CSS Variables ──────────────────────────────────────── */
+:root {
+  --bg:            #000000;
+  --text:          rgba(255,255,255,0.863);
+  --text-muted:    rgba(255,255,255,0.467);
+  --border:        rgba(136,136,136,0.667);
+  --nav-mob-bg:    #151515;
+  --nav-mob-brd:   rgba(136,136,136,0.667);
+  --overlay:       rgba(255,255,255,0.082);
+  --tag-hover-bg:  #ffffff;
+  --tag-hover-txt: #101010;
+  --dur:           700ms;
+  --photo-panel: linear-gradient(135deg, #1a1a2e 0%, #16213e 35%, #0f3460 68%, #533483 100%);
+  --photo-text: rgba(255,255,255,0.25);
+  --cursor-ring: rgba(255,255,255,0.94);
+  --cursor-label: rgba(255,255,255,0.94);
+  --font-sans: 'IBM Plex Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html.light {
+  --bg:            #f2f2f2;
+  --text:          rgba(16,16,16,0.8);
+  --text-muted:    rgba(16,16,16,0.467);
+  --border:        rgba(16,16,16,0.8);
+  --nav-mob-bg:    #e0e0e0;
+  --nav-mob-brd:   rgba(16,16,16,0.8);
+  --overlay:       rgba(0,0,0,0.04);
+  --tag-hover-bg:  #101010;
+  --tag-hover-txt: #f2f2f2;
+  --photo-panel: linear-gradient(135deg, #f7f7f7 0%, #e7e3ef 32%, #d5dce7 68%, #c7d6e7 100%);
+  --photo-text: rgba(16,16,16,0.2);
+  --cursor-ring: rgba(18,18,18,0.92);
+  --cursor-label: rgba(18,18,18,0.92);
+}
+
+/* ── Base ────────────────────────────────────────────────── */
+html, body {
+  background-color: var(--bg);
+  transition: background-color var(--dur), color var(--dur);
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+html.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+html.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ── App wrapper ─────────────────────────────────────────── */
+.app {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* ── Overlay ─────────────────────────────────────────────── */
+.bg-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  background-color: var(--overlay);
+  transition: background-color var(--dur);
+  pointer-events: none;
+}
+
+/* ── Three.js canvas ────────────────────────────────────── */
+/* Cursor */
+.cursor-system {
+  display: none;
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  user-select: none;
+  z-index: 42;
+}
+
+@media (pointer: fine) {
+  .cursor-system {
+    display: block;
+  }
+}
+
+.cursor-orb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2.12rem;
+  height: 2.12rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translate3d(-100px, -100px, 0);
+  will-change: transform, opacity;
+  mix-blend-mode: normal;
+  backface-visibility: hidden;
+}
+
+.cursor-orb__ring {
+  position: absolute;
+  inset: 0;
+  display: block;
+  border-radius: 999px;
+  border: 1.5px solid var(--cursor-ring);
+  background: transparent;
+  transform: rotate(0deg) scale(1);
+  transform-origin: 50% 50%;
+  will-change: transform;
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}
+
+.cursor-label {
+  font-family: var(--font-mono);
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 100%;
+  font-size: 0.48rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--cursor-label);
+  opacity: 0;
+  transition: opacity 120ms ease;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.cursor-system[data-mode='view'] .cursor-label {
+  opacity: 1;
+}

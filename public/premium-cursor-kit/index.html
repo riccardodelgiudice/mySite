@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Premium Cursor Kit Demo</title>
+    <link rel="stylesheet" href="./premium-cursor.css" />
+  </head>
+  <body>
+    <header class="demo-nav">
+      <span class="demo-brand">Premium Cursor Kit</span>
+      <nav class="demo-nav__links">
+        <a href="#about">About</a>
+        <a href="#works">Works</a>
+        <button type="button">Contact</button>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <p class="eyebrow">Glow trail + smooth follower</p>
+        <h1>Elegant cursor motion for modern portfolio websites.</h1>
+        <p class="lede">
+          Move the cursor, hover buttons and links, and pass over the project cards to see the
+          enhanced <strong>VIEW</strong> state.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#works" class="ghost-link">Explore Works</a>
+          <button type="button" class="primary-btn">Book a Call</button>
+        </div>
+      </section>
+
+      <section class="copy-block" id="about">
+        <div>
+          <p class="section-label">About</p>
+          <h2>Soft neon glow, subtle inertia, and a premium visual rhythm.</h2>
+        </div>
+        <p>
+          This standalone demo ships with separate HTML, CSS and JavaScript files. The custom
+          cursor is pointer-safe, lightweight, easy to customize, and includes an optional
+          smooth-scroll setup powered by Lenis.
+        </p>
+      </section>
+
+      <section class="works-grid" id="works">
+        <article class="work-card" data-cursor="view" data-cursor-label="VIEW">
+          <span class="work-card__eyebrow">Case Study</span>
+          <h3>Studio Nova</h3>
+          <p>Minimal interface system for a motion-first creative portfolio.</p>
+        </article>
+
+        <article class="work-card" data-cursor="view" data-cursor-label="OPEN">
+          <span class="work-card__eyebrow">Launch</span>
+          <h3>Signal OS</h3>
+          <p>Experimental landing page with smooth transitions and magnetic interactions.</p>
+        </article>
+
+        <article class="work-card" data-cursor="view" data-cursor-label="DETAILS">
+          <span class="work-card__eyebrow">Research</span>
+          <h3>Data Bloom</h3>
+          <p>Elegant data storytelling built around scroll choreography and atmosphere.</p>
+        </article>
+      </section>
+    </main>
+
+    <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+    <script src="./premium-cursor.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        new PremiumCursor({
+          hoverSelector: 'a, button, [data-cursor="hover"]',
+          viewSelector: '[data-cursor="view"]',
+        });
+
+        initPremiumSmoothScroll({
+          lerp: 0.08,
+          wheelMultiplier: 0.92,
+        });
+      });
+    </script>
+  </body>
+</html>

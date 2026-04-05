@@ -1,0 +1,319 @@
+:root {
+  --page-bg: #07111f;
+  --page-surface: rgba(255, 255, 255, 0.05);
+  --page-border: rgba(255, 255, 255, 0.12);
+  --page-text: rgba(255, 255, 255, 0.92);
+  --page-text-muted: rgba(255, 255, 255, 0.64);
+  --accent: rgba(143, 255, 234, 0.14);
+  --accent-strong: rgba(225, 255, 249, 0.28);
+  --accent-soft: rgba(143, 255, 234, 0.08);
+  --accent-view: rgba(255, 255, 255, 0.54);
+  --cursor-ring: rgba(255, 255, 255, 0.58);
+  --cursor-core: rgba(255, 255, 255, 0.88);
+  --cursor-ring-shadow: rgba(143, 255, 234, 0.11);
+  --cursor-label-view: rgba(16, 16, 16, 0.9);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  cursor: none !important;
+}
+
+@media (pointer: coarse) {
+  *,
+  *::before,
+  *::after {
+    cursor: auto !important;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  color: var(--page-text);
+  background:
+    radial-gradient(circle at top, rgba(45, 94, 255, 0.24), transparent 34%),
+    radial-gradient(circle at 80% 20%, rgba(75, 255, 218, 0.18), transparent 28%),
+    var(--page-bg);
+}
+
+.demo-nav,
+.hero,
+.copy-block,
+.works-grid {
+  width: min(1120px, calc(100vw - 3rem));
+  margin-inline: auto;
+}
+
+.demo-nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 0;
+  backdrop-filter: blur(18px);
+}
+
+.demo-brand,
+.section-label,
+.work-card__eyebrow {
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--page-text-muted);
+  font-size: 0.78rem;
+}
+
+.demo-nav__links {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.demo-nav__links a,
+.demo-nav__links button,
+.ghost-link,
+.primary-btn {
+  color: var(--page-text);
+  text-decoration: none;
+  background: none;
+  border: none;
+  font: inherit;
+  padding: 0;
+}
+
+.hero {
+  padding: 12vh 0 10vh;
+}
+
+.hero h1 {
+  max-width: 11ch;
+  margin: 0.2rem 0 1rem;
+  font-size: clamp(3rem, 7vw, 6.5rem);
+  line-height: 0.96;
+  font-weight: 600;
+}
+
+.lede,
+.copy-block p,
+.work-card p {
+  color: var(--page-text-muted);
+  line-height: 1.7;
+}
+
+.lede {
+  max-width: 42rem;
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.ghost-link,
+.primary-btn {
+  padding: 0.95rem 1.35rem;
+  border-radius: 999px;
+  border: 1px solid var(--page-border);
+  background: var(--page-surface);
+}
+
+.copy-block {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 2rem;
+  padding: 0 0 8rem;
+}
+
+.copy-block h2 {
+  margin: 0.4rem 0 0;
+  font-size: clamp(1.8rem, 3vw, 3rem);
+  line-height: 1.06;
+}
+
+.works-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.25rem;
+  padding-bottom: 18vh;
+}
+
+.work-card {
+  min-height: 24rem;
+  padding: 1.5rem;
+  border-radius: 1.75rem;
+  border: 1px solid var(--page-border);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
+    linear-gradient(135deg, rgba(66, 26, 106, 0.45), rgba(8, 44, 78, 0.5));
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.work-card h3 {
+  margin: 0.65rem 0 0.45rem;
+  font-size: 1.6rem;
+}
+
+/* Premium cursor */
+.pcursor {
+  position: fixed;
+  inset: 0;
+  z-index: 24;
+  pointer-events: none;
+  user-select: none;
+  display: none;
+}
+
+@media (pointer: fine) {
+  .pcursor {
+    display: block;
+  }
+}
+
+.pcursor__trail-layer {
+  position: absolute;
+  inset: 0;
+  opacity: 0.82;
+}
+
+.pcursor__trail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 999px;
+  opacity: 0;
+  filter: blur(18px);
+  transform: translate3d(-100px, -100px, 0) scale(0.4);
+  background: radial-gradient(circle, var(--accent-strong) 0%, var(--accent-soft) 48%, transparent 78%);
+  will-change: transform, opacity;
+}
+
+.pcursor__trail[data-mode="hover"] {
+  background: radial-gradient(circle, var(--accent-strong) 0%, var(--accent) 48%, transparent 78%);
+}
+
+.pcursor__trail[data-mode="VIEW"] {
+  background: radial-gradient(circle, var(--accent-view) 0%, rgba(255, 255, 255, 0.24) 48%, transparent 78%);
+}
+
+.pcursor__orb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1.5rem;
+  height: 1.5rem;
+  opacity: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translate3d(-100px, -100px, 0);
+  will-change: transform, opacity;
+  mix-blend-mode: difference;
+}
+
+.pcursor__halo,
+.pcursor__ring,
+.pcursor__dot {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  transition: transform 220ms ease, opacity 220ms ease, background-color 220ms ease, border-color 220ms ease;
+}
+
+.pcursor__halo {
+  inset: -78%;
+  opacity: 0.42;
+  filter: blur(16px);
+  background: radial-gradient(circle, var(--accent) 0%, transparent 72%);
+}
+
+.pcursor__ring {
+  border: 1px solid var(--cursor-ring);
+  background: rgba(255, 255, 255, 0.01);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.025) inset,
+    0 0 14px var(--cursor-ring-shadow);
+}
+
+.pcursor__dot {
+  inset: 41%;
+  background: var(--cursor-core);
+  box-shadow: 0 0 14px var(--accent-strong);
+}
+
+.pcursor[data-mode="hover"] .pcursor__halo {
+  transform: scale(1.06);
+  opacity: 0.54;
+}
+
+.pcursor[data-mode="hover"] .pcursor__ring {
+  border-color: transparent;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.pcursor[data-mode="hover"] .pcursor__dot {
+  transform: scale(1.08);
+}
+
+.pcursor[data-mode="VIEW"] .pcursor__halo {
+  transform: scale(1.16);
+  opacity: 0.72;
+}
+
+.pcursor[data-mode="VIEW"] .pcursor__ring {
+  border-color: transparent;
+  background: #ffffff;
+}
+
+.pcursor[data-mode="VIEW"] .pcursor__dot {
+  opacity: 0;
+}
+
+.pcursor__label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 0.46rem;
+  font-weight: 700;
+  line-height: 1;
+  text-align: center;
+  color: var(--cursor-label-view);
+  opacity: 0;
+  transform: translateY(2px);
+  transition: opacity 180ms ease, transform 220ms ease;
+}
+
+.pcursor[data-mode="VIEW"] .pcursor__label {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 900px) {
+  .copy-block,
+  .works-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .works-grid {
+    gap: 1rem;
+  }
+}

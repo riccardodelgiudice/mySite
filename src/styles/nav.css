@@ -1,0 +1,109 @@
+/* ── Mobile top bar ─────────────────────────────────────── */
+.nav-mobile {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: clamp(3rem, 6vh, 4rem);
+  padding: 0 5vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--nav-mob-bg);
+  border-bottom: 0.5px solid var(--nav-mob-brd);
+  transition: background-color var(--dur), border-color var(--dur);
+  z-index: 50;
+}
+
+.nav-mobile .nav-links { display: flex; gap: clamp(0.8rem, 3vw, 1.5rem); align-items: center; }
+.nav-mobile .social    { display: flex; gap: 0.75rem; align-items: center; font-size: clamp(0.85rem, 2vw, 1.1rem); }
+
+/* ── Desktop side nav ────────────────────────────────────── */
+.nav-desktop {
+  display: none;
+  position: fixed;
+  top: 12vh; left: 3vw;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+  z-index: 50;
+}
+.nav-desktop .social {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+  font-size: clamp(1rem, 1.5vw, 1.5rem);
+  font-weight: 200;
+}
+
+@media (min-width: 1024px) { .nav-mobile { display: none; } .nav-desktop { display: flex; } }
+
+/* ── Nav item ────────────────────────────────────────────── */
+.nav-item {
+  position: relative;
+  font-family: var(--font-mono);
+  font-size: clamp(0.62rem, 2.15vw, 1.08rem);
+  letter-spacing: 0.1em;
+  font-weight: 300;
+  font-family: inherit;
+  color: var(--text-muted);
+  transition: color 0.5s;
+  text-transform: uppercase;
+  white-space: nowrap;
+  background: none;
+  border: none;
+  padding: 0;
+  outline: none;
+}
+.nav-item:hover, .nav-item.active { color: var(--text); }
+
+.nav-item::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0;
+  height: 0.5px; width: 0;
+  background-color: var(--text);
+  transition: width 0.5s ease-out;
+}
+.nav-item.active::after { width: 100%; }
+.nav-item:hover::after  { width: 100%; }
+
+/* ── Social icons ────────────────────────────────────────── */
+.social a { color: var(--text-muted); transition: color 0.3s; }
+.social a:hover { color: var(--text); }
+
+/* ── Mode toggle ─────────────────────────────────────────── */
+.toggle-wrap {
+  position: fixed;
+  top: clamp(3.5rem, 7vh, 10rem);
+  left: 50%; transform: translateX(-50%);
+  z-index: 50;
+  transition: top var(--dur);
+}
+@media (orientation: landscape) { .toggle-wrap { top: clamp(0.8rem, 4vh, 1rem); } }
+@media (min-width: 1024px) { .toggle-wrap { top: 5vh; left: auto; right: 3vw; transform: none; } }
+
+.toggle-btn {
+  width: 3rem; padding: 0.1rem;
+  aspect-ratio: 5/2;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: border-color var(--dur);
+  outline: none;
+}
+@media (min-width: 1024px) { .toggle-btn { width: 5rem; padding: 0.2rem; border-width: 2px; } }
+
+.toggle-dot {
+  aspect-ratio: 1;
+  width: 1rem;
+  border-radius: 50%;
+  background-color: transparent;
+  transition: background-color var(--dur);
+}
+@media (min-width: 1024px) { .toggle-dot { width: 1.6rem; } }
+.toggle-dot.on { background-color: var(--text); }
